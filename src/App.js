@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import AddContactForm from "./components/AddContactForm";
+import ContactList from "./components/ContactList";
 
 function App() {
+  const [contacts, setContacts] = useState([]);
+
+  const handleAddContact = (contact) => {
+    setContacts(prev => [...prev, contact]);
+  };
+
+  const handleDeleteContact = (index) => {
+    setContacts(prev => prev.filter((_, idx) => idx !== index));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ width: 420, margin: "30px auto", padding: 20, border: "1px solid #ddd", borderRadius: 10 }}>
+      <h1 style={{ textAlign: "center" }}>Quản lý danh sách liên hệ</h1>
+      <AddContactForm onAdd={handleAddContact} />
+      <ContactList contacts={contacts} onDelete={handleDeleteContact} />
     </div>
   );
 }
