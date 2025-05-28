@@ -7,7 +7,7 @@ function ContactList({ contacts, onDelete }) {
       <ul style={{ padding: 0 }}>
         {contacts.map((contact, idx) => (
           <li key={idx} style={{ marginBottom: 8, listStyle: "none" }}>
-            <strong>{contact.name}</strong> - {contact.phone}
+            <strong>{contact.name}</strong> - {contact.phone} - {contact.email}
             <button
               onClick={() => onDelete(idx)}
               style={{ marginLeft: 15, padding: "2px 8px" }}
