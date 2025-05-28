@@ -1,37 +1,65 @@
 import React, { useState } from "react";
-import AddContactForm from "./components/AddContactForm";
 import ContactList from "./components/ContactList";
 
 function App() {
   const [contacts, setContacts] = useState([]);
-  const [search, setSearch] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState(""); // Thêm state email
 
-  const handleAddContact = (contact) => {
-    setContacts(prev => [...prev, contact]);
+  // Hàm thêm liên hệ mới
+  const handleAddContact = () => {
+    if (!name || !phone || !email) return alert("Vui lòng nhập đủ thông tin!");
+
+    setContacts(prev => [
+      ...prev,
+      { name, phone, email }
+    ]);
+    setName("");
+    setPhone("");
+    setEmail(""); // Reset trường email
   };
 
-  const handleDeleteContact = (index) => {
-    setContacts(prev => prev.filter((_, idx) => idx !== index));
+  // Hàm xóa liên hệ
+  const handleDeleteContact = index => {
+    setContacts(prev => prev.filter((_, i) => i !== index));
   };
-
-  // Lọc liên hệ theo từ khóa tìm kiếm
-  const filteredContacts = contacts.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.phone.includes(search)
-  );
 
   return (
     <div style={{ width: 420, margin: "30px auto", padding: 20, border: "1px solid #ddd", borderRadius: 10 }}>
       <h1 style={{ textAlign: "center" }}>Quản lý danh sách liên hệ</h1>
-      <AddContactForm onAdd={handleAddContact} />
       <input
         type="text"
-        placeholder="Tìm kiếm liên hệ theo tên hoặc số ĐT"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        style={{ marginBottom: 12, width: "100%", padding: 6 }}
+        placeholder="Họ tên"
+        value={name}
+        onChange={e => setName(e.target.value)}
+        style={{ marginRight: 8 }}
       />
-      <ContactList contacts={filteredContacts} onDelete={handleDeleteContact} />
+      <input
+        type="text"
+        placeholder="Số điện thoại"
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+        style={{ marginRight: 8 }}
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        style={{ marginRight: 8 }}
+      />
+      <button onClick={handleAddContact}>Thêm liên hệ</button>
+
+      <h2 style={{ marginTop: 24 }}>Danh sách liên hệ</h2>
+      <ul>
+        {contacts.map((c, idx) => (
+          <li key={idx}>
+            <b>{c.name}</b> - {c.phone} - {c.email}{" "}
+            <button onClick={() => handleDeleteContact(idx)}>Xóa</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
